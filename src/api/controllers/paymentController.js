@@ -23,53 +23,6 @@ const generateOrderID = async () => {
 
 
 
-// exports.generateKHQR = async (req, res) => {
-//     try {
-
-//         const orderId = await generateOrderID();
-//         // Optional data for one-time KHQR
-//         const optionalData = {
-//             currency: khqrData.currency.khr,
-//             amount: 100, // Example: 100 KHR | If amount is set to 0, QR and MD5 will be generated without a specific amount
-//             expirationTimestamp,
-//         };
-
-//         const individualInfo = new IndividualInfo(
-//             "chanvuthy_leap3@aclb", // Bakong Account ID
-//             "Chanvuthy Leap",       // Name
-//             "PHNOM PENH",           // City
-//             optionalData
-//         );
-
-//         const khqr = new BakongKHQR();
-//         const qrData = khqr.generateIndividual(individualInfo);
-
-//         // Store in MongoDB
-//         const order = await Order.findOneAndUpdate(
-//             { orderId },
-//             {
-//                 orderId,
-//                 qr: qrData.data.qr,
-//                 md5: qrData.data.md5,
-//                 expiration: expirationTimestamp,
-//                 paid: false,
-//             },
-//             { upsert: true, new: true, setDefaultsOnInsert: true }
-//         );
-
-//         return successResponse(res, 'QR generated successfully', {
-//             orderId: order.orderId,
-//             qr: order.qr,
-//             md5: order.md5,
-//             expiresAt: order.expiresAt
-//         });
-//     } catch (err) {
-//         console.error(err);
-//         return errorResponse(res, 'Internal error', err);
-//     }
-// }
-
-
 exports.generateKHQR = async (req, res) => {
   try {
     const orderId = await generateOrderID();
@@ -84,8 +37,8 @@ exports.generateKHQR = async (req, res) => {
 
     const individualInfo = new IndividualInfo(
       process.env.BAKONG_ACCOUNT_USERNAME,
-      "Chanvuthy Leap",
-      "PHNOM PENH",
+      "Chanvuthy Leap", // Update to your username
+      "PHNOM PENH",  // Update to your city
       optionalData
     );
 
@@ -121,6 +74,7 @@ exports.generateKHQR = async (req, res) => {
 
 
 
+// Check Payment Controller
 exports.checkPayment = async (req, res) => {
     try {
         const { md5 } = req.body;

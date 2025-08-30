@@ -29,6 +29,18 @@ beforeEach(async () => {
   await Order.deleteMany();
 });
 
+  afterEach(() => {
+    const currentTest = expect.getState().currentTestName;
+    const testErrors = expect.getState().currentTestErrors;
+
+    if (!testErrors || testErrors.length === 0) {
+      console.log(`✔️ ${currentTest}`);
+    } else {
+      console.log(`❌ ${currentTest}`);
+    }
+  });
+
+
 describe('Payment API', () => {
   test('Generate KHQR', async () => {
     const res = await request(app).post('/api/generate-khqr').send();
